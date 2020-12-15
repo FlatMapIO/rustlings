@@ -7,11 +7,9 @@
 // Execute the command `rustlings hint collections2` if you need
 // hints.
 
-// I AM NOT DONE
-
 fn vec_loop(mut v: Vec<i32>) -> Vec<i32> {
     for i in v.iter_mut() {
-        // TODO: Fill this up so that each element in the Vec `v` is
+        *i = *i * 2;
         // multiplied by 2.
     }
 
@@ -28,11 +26,6 @@ mod tests {
         let v: Vec<i32> = (1..).filter(|x| x % 2 == 0).take(5).collect();
         let ans = vec_loop(v.clone());
 
-        assert_eq!(
-            ans,
-            v.iter()
-                .map(|x| x * 2)
-                .collect::<Vec<i32>>()
-        );
+        assert_eq!(ans, v.iter().map(|x| x * 2).collect::<Vec<i32>>());
     }
 }

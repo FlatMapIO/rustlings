@@ -1,0 +1,7 @@
+[package]
+name = "exercises"
+version = "1.0.0"
+authors = ["huodon@gmail.com"]
+edition = "2018"
+
+[dependencies]

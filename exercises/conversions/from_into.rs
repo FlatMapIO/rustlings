@@ -33,10 +33,26 @@ impl Default for Person {
 // If while parsing the age, something goes wrong, then return the default of Person
 // Otherwise, then return an instantiated Person object with the results
 
-// I AM NOT DONE
-
 impl From<&str> for Person {
     fn from(s: &str) -> Person {
+        let a: Vec<&str> = s.split(',').collect();
+        match a.len() {
+            2 => {
+                let age = unsafe { *a.get_unchecked(1) }.parse::<usize>();
+                if age.is_err() {
+                    return Person::default();
+                }
+                let name = unsafe { *a.get_unchecked(0) };
+                if name.is_empty() {
+                    return Person::default();
+                }
+                Person {
+                    name: String::from(name),
+                    age: age.unwrap(),
+                }
+            }
+            _ => Person::default(),
+        }
     }
 }
 
@@ -52,6 +68,7 @@ fn main() {
 #[cfg(test)]
 mod tests {
     use super::*;
+
     #[test]
     fn test_default() {
         // Test that the default person is 30 year old John
@@ -62,7 +79,7 @@ mod tests {
     #[test]
     fn test_bad_convert() {
         // Test that John is returned when bad string is provided
-        let p = Person::from("");
+        let p = Person::from("John");
         assert_eq!(p.name, "John");
         assert_eq!(p.age, 30);
     }
@@ -70,7 +87,7 @@ mod tests {
     fn test_good_convert() {
         // Test that "Mark,20" works
         let p = Person::from("Mark,20");
-        assert_eq!(p.name, "Mark");
+        assert_eq!(p.name, "Mark".to_string());
         assert_eq!(p.age, 20);
     }
     #[test]
